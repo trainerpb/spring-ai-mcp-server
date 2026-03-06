@@ -12,7 +12,7 @@
 	<artifactId>spring-ai-mcp-one</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-ai-mcp-one</name>
-	<description>Demo project for Spring Boot</description>
+	<description>MCP Server Application</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -28,13 +28,10 @@
 	</scm>
 	<properties>
 		<java.version>25</java.version>
-		<spring-ai.version>2.0.0-SNAPSHOT</spring-ai.version>
+		<spring-ai.version>1.1.2</spring-ai.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+
 
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -82,7 +79,7 @@
             <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
         </repository>
         <repository>
@@ -90,7 +87,7 @@
             <name>Central Portal Snapshots</name>
             <url>https://central.sonatype.com/repository/maven-snapshots/</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
                 <enabled>true</enabled>
