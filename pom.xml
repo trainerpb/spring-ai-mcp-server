@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -12,20 +12,41 @@
 	<artifactId>spring-ai-mcp-one</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-ai-mcp-one</name>
-	<description>MCP Server Application</description>
+	<description>Loan Bot MCP Server Prototype</description>
 	<url/>
 	<licenses>
-		<license/>
+		<license>
+			<name>License Copyrighted</name>
+			<url>forbidden-license.host</url>
+			<distribution>repo</distribution>
+		</license>
+
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<id>trainerpb</id>
+			<name>Soham Sengupta</name>
+			<email>sohamsironline@gmail.com</email>
+			<url>https://github.com/trinerpb</url>
+			<organization>Personal</organization>
+			<organizationUrl>https://in.linkedin.com/in/soham-sengupta-37279825</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+				<role>Mentor</role>
+				<role>Researcher</role>
+			</roles>
+			<timezone>+5.5</timezone>
+		</developer>
+
 	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<!--    <scm>-->
+	<!--        <connection>scm:git:https://github.com/trainerpb/simple-spring-ai-rag-example</connection>-->
+	<!--        <developerConnection>scm:git:ssh://git@github.com:trainerpb/simple-spring-ai-rag-example.git-->
+	<!--        </developerConnection>-->
+	<!--        <url>https://github.com/soham-sengupta/spring-ai-demo</url>-->
+	<!--        <tag>HEAD</tag>-->
+	<!--    </scm>-->
 	<properties>
 		<java.version>25</java.version>
 		<spring-ai.version>1.1.2</spring-ai.version>
@@ -33,16 +54,12 @@
 	<dependencies>
 
 
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
-        </dependency>
-
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
 		</dependency>
+
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -65,35 +82,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>central-portal-snapshots</id>
-            <name>Central Portal Snapshots</name>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+
 	<build>
 		<plugins>
 			<plugin>

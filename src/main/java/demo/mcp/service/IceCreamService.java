@@ -31,14 +31,21 @@ public class IceCreamService {
                                    McpSyncServerExchange exchange
                                    ) {
 
+        System.out.println("IceCreamService.createIceCream :: Received request to create ice cream with brandName: " + brandName + ", size: " + strSize + ", flavor: " + strFlavor);
+        log.info("Received request to create ice cream with brandName: {}, size: {}, flavor", brandName,  strFlavor);
+
         Flavor flavor = null;
         try {
-            flavor = Flavor.valueOf(strFlavor);
+            flavor = Flavor.valueOf(strFlavor.toUpperCase());
+            log.info("Parsed flavor: {}", flavor);
         } catch (IllegalArgumentException e) {
+            log.error("Invalid flavor provided: {}. Error: {}", strFlavor, e.getMessage());
             throw new RuntimeException(e);
         }
-        Size size = StringUtils.hasText(strSize)? Size.valueOf(strSize): Size.SMALL;
-        brandName=!StringUtils.hasText(brandName)? brandName: "Qwality";
+        Size size = StringUtils.hasText(strSize)? Size.valueOf(strSize.toUpperCase()): Size.SMALL;
+        log.info("Parsed size: {}", size);
+        brandName=StringUtils.hasText(brandName)? brandName: "Qwality";
+        log.info("Using brand name: {}", brandName);
 
 
 
@@ -48,7 +55,7 @@ public class IceCreamService {
                 .flavour(flavor)
                 .qty(null==quantity?1:quantity)
                 .build();
-
+        log.info("Created ice cream: {}", resultIceCream);
         // Define the schema for the data you want to elicit
         Map<String, Object> schema = Map.of(
                 "type", "object",
@@ -60,6 +67,7 @@ public class IceCreamService {
                 ),
                 "required", List.of("confirmOrder")
         );
+        log.info("Eliciting user confirmation for the order: {}", resultIceCream);
         McpSchema.ElicitResult elicitResult = exchange.createElicitation(McpSchema.ElicitRequest.builder()
                 .message("Confirm your order " + resultIceCream.toString())
                 .requestedSchema(schema)
