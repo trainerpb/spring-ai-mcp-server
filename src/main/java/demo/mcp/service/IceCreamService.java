@@ -2,14 +2,13 @@ package demo.mcp.service;
 
 import demo.mcp.model.Flavor;
 import demo.mcp.model.IceCream;
+import demo.mcp.model.IceCreamOrderResult;
 import demo.mcp.model.Size;
-import io.modelcontextprotocol.client.McpSyncClient;
 import io.modelcontextprotocol.server.McpSyncServerExchange;
 import io.modelcontextprotocol.spec.McpSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springaicommunity.mcp.annotation.McpToolParam;
-import org.springaicommunity.mcp.context.McpSyncRequestContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,13 +21,13 @@ public class IceCreamService {
 
 
     @McpTool(description = "This tool is used to create ice cream")
-    public IceCream createIceCream(@McpToolParam(description = "Brand of the ice cream. Example- Qwality, Vadilal, Amul, Rollicks, Baskin", required = false) String brandName,
-                                   @McpToolParam(description = "Size of icecream. example- small, medium, large",required = false) String strSize,
-                                   @McpToolParam(description = "Flavour of the ice cream. E.g. vanilla, chocolate")
+    public IceCreamOrderResult createIceCream(@McpToolParam(description = "Brand of the ice cream. Example- Qwality, Vadilal, Amul, Rollicks, Baskin", required = false) String brandName,
+                                              @McpToolParam(description = "Size of icecream. example- small, medium, large",required = false) String strSize,
+                                              @McpToolParam(description = "Flavour of the ice cream. E.g. vanilla, chocolate")
 
                                        String  strFlavor,
-                                   @McpToolParam(description="quantity of ice cream in numbers",required = false) Integer quantity,
-                                   McpSyncServerExchange exchange
+                                              @McpToolParam(description="quantity of ice cream in numbers",required = false) Integer quantity,
+                                              McpSyncServerExchange exchange
                                    ) {
 
         System.out.println("IceCreamService.createIceCream :: Received request to create ice cream with brandName: " + brandName + ", size: " + strSize + ", flavor: " + strFlavor);
@@ -77,16 +76,25 @@ public class IceCreamService {
                     log.info("Accepted elicitation :: {}" , elicitResult);
                     if("yes".equalsIgnoreCase(elicitResult.content().get("confirmOrder").toString())){
                         log.info("Elicitation accepted :: Order confirmed :: {}",resultIceCream.toString());
-                        return resultIceCream;
+                        return IceCreamOrderResult.builder()
+                                .iceCream(resultIceCream)
+                                .success(true)
+                                .message("Order confirmed :: "+resultIceCream.toString())
+                                .build();
                     }else{
                         log.warn("User rejected order :: {}" , resultIceCream.toString());
+
                     }
             }
             case DECLINE -> {
                 log.warn("Decline elicitation :: {}" , elicitResult);
             }
         }
-        return null;
+        return IceCreamOrderResult.builder()
+                .success(false)
+                .message("User rejected to confirm the order :: "+resultIceCream.toString())
+                .iceCream(null)
+                .build();
 
     }
 }
