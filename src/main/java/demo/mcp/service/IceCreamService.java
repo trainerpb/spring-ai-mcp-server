@@ -1,14 +1,13 @@
 package demo.mcp.service;
 
-import demo.mcp.model.Flavor;
-import demo.mcp.model.IceCream;
-import demo.mcp.model.IceCreamOrderResult;
-import demo.mcp.model.Size;
+import demo.mcp.model.*;
 import io.modelcontextprotocol.server.McpSyncServerExchange;
 import io.modelcontextprotocol.spec.McpSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springaicommunity.mcp.annotation.McpToolParam;
+import org.springaicommunity.mcp.context.McpSyncRequestContext;
+import org.springaicommunity.mcp.context.StructuredElicitResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,7 +26,7 @@ public class IceCreamService {
 
                                        String  strFlavor,
                                               @McpToolParam(description="quantity of ice cream in numbers",required = false) Integer quantity,
-                                              McpSyncServerExchange exchange
+                                              McpSyncRequestContext requestContext
                                    ) {
 
         System.out.println("IceCreamService.createIceCream :: Received request to create ice cream with brandName: " + brandName + ", size: " + strSize + ", flavor: " + strFlavor);
@@ -56,25 +55,15 @@ public class IceCreamService {
                 .build();
         log.info("Created ice cream: {}", resultIceCream);
         // Define the schema for the data you want to elicit
-        Map<String, Object> schema = Map.of(
-                "type", "object",
-                "properties", Map.of(
-                        "confirmOrder", Map.of(
-                                "type", "string",
-                                "description", "confirmation should be 'yes' or 'no' otherwise"
-                        )
-                ),
-                "required", List.of("confirmOrder")
-        );
+
         log.info("Eliciting user confirmation for the order: {}", resultIceCream);
-        McpSchema.ElicitResult elicitResult = exchange.createElicitation(McpSchema.ElicitRequest.builder()
-                .message("Confirm your order " + resultIceCream.toString())
-                .requestedSchema(schema)
-                .build());
+       StructuredElicitResult<OrderConfirmElicitRequest> elicitResult = requestContext
+               .elicit(p-> p.message(">>>>>>>>>>>>>> Please confirm your order (yes/no): "+resultIceCream),OrderConfirmElicitRequest.class);
+
         switch(elicitResult.action()){
             case ACCEPT -> {
                     log.info("Accepted elicitation :: {}" , elicitResult);
-                    if("yes".equalsIgnoreCase(elicitResult.content().get("confirmOrder").toString())){
+                    if("yes".equalsIgnoreCase(elicitResult.structuredContent().getConfirmOrder())){
                         log.info("Elicitation accepted :: Order confirmed :: {}",resultIceCream.toString());
                         return IceCreamOrderResult.builder()
                                 .iceCream(resultIceCream)
