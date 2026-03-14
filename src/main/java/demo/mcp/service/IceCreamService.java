@@ -58,7 +58,7 @@ public class IceCreamService {
 
         log.info("Eliciting user confirmation for the order: {}", resultIceCream);
        StructuredElicitResult<OrderConfirmElicitRequest> elicitResult = requestContext
-               .elicit(p-> p.message(">>>>>>>>>>>>>> Please confirm your order (yes/no): "+resultIceCream),OrderConfirmElicitRequest.class);
+               .elicit(p-> p.message("Please confirm your order (yes/no): "+resultIceCream),OrderConfirmElicitRequest.class);
 
         switch(elicitResult.action()){
             case ACCEPT -> {
